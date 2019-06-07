@@ -2,10 +2,16 @@ package com.bone.bone.controllers;
 
 import com.bone.bone.common.DocoHelpers;
 import com.bone.bone.models.User;
+import com.bone.bone.payload.LoginRequest;
 import com.bone.bone.payload.SignUpRequest;
 import com.bone.bone.repository.UserRepository;
+import com.bone.bone.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +27,34 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    JwtTokenProvider tokenProvider;
+
+    @PostMapping("/signin")
+    public JsonNode signIn(@Valid @RequestBody LoginRequest loginRequest)
+    {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsernameOrEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String jwt = tokenProvider.generateToken(auth);
+        Map body = new HashMap<>();
+        body.put("token",jwt);
+        return  DocoHelpers.response(body,200);
+    }
 
     @PostMapping("/signup")
     public JsonNode registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
