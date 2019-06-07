@@ -2,6 +2,7 @@ package com.bone.bone.controllers;
 
 import com.bone.bone.common.DocoHelpers;
 import com.bone.bone.models.User;
+import com.bone.bone.payload.JwtAuthenticationResponse;
 import com.bone.bone.payload.LoginRequest;
 import com.bone.bone.payload.SignUpRequest;
 import com.bone.bone.repository.UserRepository;
@@ -27,16 +28,16 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenProvider tokenProvider;
+    private JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
     public JsonNode signIn(@Valid @RequestBody LoginRequest loginRequest)
@@ -52,8 +53,8 @@ public class AuthController {
 
         String jwt = tokenProvider.generateToken(auth);
         Map body = new HashMap<>();
-        body.put("token",jwt);
-        return  DocoHelpers.response(body,200);
+        body.put("jwt_auth",new JwtAuthenticationResponse(jwt));
+        return  DocoHelpers.response(body ,200);
     }
 
     @PostMapping("/signup")
