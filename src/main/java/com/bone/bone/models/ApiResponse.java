@@ -14,7 +14,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse {
     @JsonProperty("metadata")
-    private Map<String, String> metadata;
+    private Map metadata;
 
     @JsonProperty("response")
     private Map response;

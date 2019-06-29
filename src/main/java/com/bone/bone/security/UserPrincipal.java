@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 public class UserPrincipal implements UserDetails {
-    private Long id;
+    private Integer id;
 
     private String name;
 
@@ -23,7 +23,7 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String name, String username, String email, String password) {
+    public UserPrincipal(Integer id, String name, String username, String email, String password) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -42,7 +42,7 @@ public class UserPrincipal implements UserDetails {
         );
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

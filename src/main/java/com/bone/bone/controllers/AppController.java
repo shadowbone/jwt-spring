@@ -33,10 +33,12 @@ public class AppController extends DocoController {
     }
 
     @PostMapping(value = "/")
-    public  String post(@RequestBody Map<String, String> body) {
+    public  JsonNode post(@RequestBody Map<String, String> body) {
         AppModel app = new AppModel();
         app.setMessage(body.get("message"));
         service.save(app);
-        return  "sukses";
+        Map rest = new HashMap();
+        rest.put("messages","Data Berhasil dibuat");
+        return DocoHelpers.response(rest,201);
     }
 }

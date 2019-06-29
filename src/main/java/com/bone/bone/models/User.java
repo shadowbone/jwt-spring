@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 public class User extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank
     @Size(max = 40)
@@ -51,11 +51,11 @@ public class User extends DateAudit {
         this.password = password;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

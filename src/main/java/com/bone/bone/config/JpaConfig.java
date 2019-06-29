@@ -1,0 +1,16 @@
+package com.bone.bone.config;
+
+import com.bone.bone.services.AuditorService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+@Configuration
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+public class JpaConfig {
+    @Bean
+    public AuditorAware<Integer> auditorAware() {
+        return new AuditorService();
+    }
+}

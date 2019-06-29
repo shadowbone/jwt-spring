@@ -2,6 +2,7 @@ package com.bone.bone.config;
 
 import com.bone.bone.security.CustomUserDetailsService;
 import com.bone.bone.security.JwtAuthenticationEntryPoint;
+import com.bone.bone.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         jsr250Enabled = true,
         prePostEnabled = true
 )
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -31,6 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -81,5 +89,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated();
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

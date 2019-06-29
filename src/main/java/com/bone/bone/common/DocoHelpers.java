@@ -11,8 +11,8 @@ public class DocoHelpers {
 
     public static JsonNode response(Map<String,String> body, int status)
     {
-        Map<String, String> metadata = new HashMap();
-        metadata.put("status", Integer.toString(status));
+        Map metadata = new HashMap();
+        metadata.put("status", status);
         metadata.put("message", HttpStatus.valueOf(status).getReasonPhrase());
 
         JsonNode result = ResponseApi.toJson((ApiResponse.builder()
