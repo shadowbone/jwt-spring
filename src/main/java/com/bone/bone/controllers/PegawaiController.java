@@ -1,6 +1,7 @@
 package com.bone.bone.controllers;
 
 import com.bone.bone.common.DocoHelpers;
+import com.bone.bone.exception.ResourceNotFoundException;
 import com.bone.bone.models.Pegawai;
 import com.bone.bone.payload.PegawaiRequest;
 import com.bone.bone.repository.PegawaiRepository;
@@ -41,9 +42,14 @@ public class PegawaiController {
     }
 
     @PutMapping(value = "/save")
-    public JsonNode put() {
-
+    public JsonNode put(@RequestParam(name = "id") Long Id, @Valid @RequestBody PegawaiRequest request) {
+        Pegawai getData = repoPegawai.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Id Tidak Valid", "id", Id));
+        getData.setNama(request.getNama());
+        getData.setNo_ktp(request.getNo_ktp());
+        getData.setAlamat(request.getAlamat());
+        Pegawai updatePegawai = repoPegawai.save(getData);
         Map body = new HashMap<>();
+        body.put("data_update",updatePegawai);
         return DocoHelpers.response(body,200);
     }
 

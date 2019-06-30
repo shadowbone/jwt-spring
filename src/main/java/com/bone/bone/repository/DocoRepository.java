@@ -11,4 +11,6 @@ public interface  DocoRepository<T, ID> extends CrudRepository<T, ID> {
     Iterable<T> findAll(Sort sort);
 
     Page<T> findAll(Pageable pageable);
+
+    void delete(T id);
 }

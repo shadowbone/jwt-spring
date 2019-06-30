@@ -1,17 +1,19 @@
 package com.bone.bone.models;
 
 import com.bone.bone.models.audit.DocoAudit;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "m_pegawai")
-public class Pegawai extends DocoAudit<Integer> {
+@Where(clause = "is_deleted=false")
+public class Pegawai  extends DocoAudit<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @NotBlank
     private String nama;
