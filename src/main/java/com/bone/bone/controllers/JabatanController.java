@@ -47,4 +47,12 @@ public class JabatanController {
         body.put("data_update",updateJabatan);
         return DocoHelpers.response(body,200);
     }
+
+    @DeleteMapping(value = "/delete")
+    public JsonNode delete(@RequestParam(name = "id") Long Id) {
+        repoJabatan.softDelete(Id);
+        Map body = new HashMap<>();
+        body.put("message","Data Jabatan berhasil dihapus.");
+        return DocoHelpers.response(body,200);
+    }
 }

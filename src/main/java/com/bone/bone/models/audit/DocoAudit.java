@@ -122,7 +122,7 @@ public abstract class DocoAudit<I>  {
     @PreUpdate
     public void preUpdate() {
         if (is_deleted == true) {
-
+            modified_count = 99;
         } else {
             modified_count++;
         }

@@ -54,9 +54,10 @@ public class PegawaiController {
     }
 
     @DeleteMapping(value = "/delete")
-    public JsonNode delete() {
-
+    public JsonNode delete(@RequestParam(name = "id") Long Id) {
+        repoPegawai.softDelete(Id);
         Map body = new HashMap<>();
+        body.put("message","Data Pegawai berhasil dihapus.");
         return DocoHelpers.response(body,200);
     }
 }

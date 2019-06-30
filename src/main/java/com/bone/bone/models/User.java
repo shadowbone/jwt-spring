@@ -1,6 +1,6 @@
 package com.bone.bone.models;
 
-import com.bone.bone.models.audit.DateAudit;
+import com.bone.bone.models.audit.DocoAudit;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
                 "email"
         })
 })
-public class User extends DateAudit {
+public class User extends DocoAudit<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
