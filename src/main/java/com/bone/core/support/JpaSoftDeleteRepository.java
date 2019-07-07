@@ -20,6 +20,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.springframework.data.jpa.repository.query.QueryUtils.getQueryString;
@@ -84,13 +86,13 @@ public class JpaSoftDeleteRepository<T,ID extends Serializable> extends SimpleJp
     @Override
     @Transactional
     public void delete(T entity) {
-        Integer user = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         Assert.notNull(entity, "The given entity must not be null!");
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaUpdate<T> updater = criteriaBuilder.createCriteriaUpdate(getDomainClass());
         Root<T> root = updater.from(getDomainClass());
         updater.set(SOFT_DELETE_FLAG_PROPERTIES, true);
-        updater.set("deleted_by", user);
+        updater.set("deleted_by", this.getUid());
+        updater.set("deleted_date", this.getCurrentDate());
         final List<Predicate> predicates = new ArrayList<>();
         if(entityInformation.hasCompositeId()){
             entityInformation.getIdAttributeNames().forEach(idName -> {
@@ -163,6 +165,17 @@ public class JpaSoftDeleteRepository<T,ID extends Serializable> extends SimpleJp
             }
             return criteriaBuilder.equal(root.get(information.getIdAttribute().getName()), id);
         }
+    }
+
+    private Integer getUid(){
+        Integer uid = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return  uid;
+    }
+
+    private String getCurrentDate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
     }
 
     private static final class DeletedSpecification<T> implements Specification<T>{

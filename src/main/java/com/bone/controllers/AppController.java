@@ -28,7 +28,7 @@ public class AppController extends DocoController {
         Pageable limit = PageRequest.of(0,10);
         Page<AppModel> data = service.findAll(limit);
         Map body = new HashMap();
-        body.put("data",data.getContent());
+        body.put("data",data);
         return DocoHelpers.response(body,201);
     }
 

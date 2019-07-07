@@ -48,7 +48,7 @@ public abstract class DocoAudit<I>  {
 
     private I deleted_by;
 
-    private Instant deleted_date;
+    private String deleted_date;
 
     public I getCreated_by() {
         return created_by;
@@ -103,11 +103,11 @@ public abstract class DocoAudit<I>  {
         this.deleted_by = deleted_by;
     }
 
-    public Instant getDeleted_date() {
+    public String getDeleted_date() {
         return deleted_date;
     }
 
-    public void setDeleted_date(Instant deleted_date) {
+    public void setDeleted_date(String deleted_date) {
         this.deleted_date = deleted_date;
     }
 

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "m_pegawai")
-//@Where(clause = "is_deleted=false")
 public class Pegawai  extends DocoAudit<Integer> {
 
     @Id
